@@ -1,13 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
+using System.IO;
+using Umbraco.Spec.Config;
 
 namespace Umbraco.Spec
 {
-    // Entry point for the application
     public class Startup
     {
+        /// <summary>
+        /// Entry-point for the Umbraco.Spec application.  Call this from the startup method of your application.
+        /// </summary>
+        public void Configuration()
+        {
+            if (UmbracoSpecConfig.Current == null || !UmbracoSpecConfig.Current.Enabled) { return; }
+
+            var configFile = UmbracoSpecConfig.Current.ConfigFile;
+
+            var configContent = File.ReadAllText(configFile);
+
+            var config = JsonConvert.DeserializeObject(configContent);
+
+            // let the games begin.
+        }
     }
 }
